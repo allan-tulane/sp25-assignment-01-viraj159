@@ -14,8 +14,17 @@ def foo(x):
     
 
 def longest_run(mylist, key):
-    ### TODO
-    pass
+    max_run = 0
+    current_run = 0
+
+    for num in myarray:
+        if num == key:
+            current_run += 1
+            max_run = max(max_run, current_run)
+        else:
+            current_run = 0  # Reset the counter if a different number is found
+
+    return max_run
 
 
 class Result:
