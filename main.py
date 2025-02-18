@@ -51,8 +51,48 @@ def to_value(v):
         return int(v)
         
 def longest_run_recursive(mylist, key):
-    ### TODO
-    pass
+    n = len(mylist)
+    
+    #  Base cases
+    if n == 0:
+        return Result(0, 0, 0, True)
+    if n == 1:
+        if mylist[0] == key:
+            return Result(1, 1, 1, True)
+        else:
+            return Result(0, 0, 0, False)
+
+    
+    #  Divide
+    mid = n // 2
+    left_res = longest_run_recursive(mylist[:mid], key)
+    right_res = longest_run_recursive(mylist[mid:], key)
+
+     #  Combine Results
+    is_entire_range = left_res.is_entire_range and right_res.is_entire_range
+    if left_res.is_entire_range:
+        left_size = left_res.left_size + right_res.left_size
+    else:
+        left_size = left_res.left_size
+
+    
+    if right_res.is_entire_range:
+        right_size = right_res.right_size + left_res.right_size
+    else:
+        right_size = right_res.right_size
+
+
+    crossing_run = left_res.right_size + right_res.left_size
+    longest_size = max(left_res.longest_size, right_res.longest_size, crossing_run)
+
+    # If the entire sublist is key, simplify
+    if is_entire_range:
+        left_size = n
+        right_size = n
+        longest_size = n
+
+    return Result(left_size, right_size, longest_size, is_entire_range)
+
 
 
 
